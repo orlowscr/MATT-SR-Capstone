@@ -1,4 +1,3 @@
-
 ---
 name: Project Task
 about: Create a task for the MATT Senior Design project
