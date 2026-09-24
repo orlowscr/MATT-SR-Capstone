@@ -1,4 +1,3 @@
-
 ---
 name: Research & Requirements
 about: Document research, sponsor questions, and technical discovery
