@@ -1,4 +1,3 @@
-
 ---
 name: Bug Report
 about: Report a defect or unexpected behavior in MATT
