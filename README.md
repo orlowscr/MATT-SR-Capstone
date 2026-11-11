@@ -30,6 +30,43 @@ python -m pip install pytest
 python -m pytest -q
 ```
 
+## Run on Windows
+
+You need **Python 3.10 or newer** and **Git**. When you install Python from [python.org](https://www.python.org/downloads/windows/), check **Add python.exe to PATH**. Check that both are ready:
+
+```powershell
+py --version
+git --version
+```
+
+Then, in **PowerShell**:
+
+```powershell
+git clone https://github.com/orlowscr/MATT-SR-Capstone.git
+cd MATT-SR-Capstone
+py -m venv .venv
+.\.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+python app.py
+```
+
+Open **http://127.0.0.1:5000** in your browser. Press **Ctrl+C** in PowerShell to stop the server, and run `deactivate` to leave the virtual environment.
+
+If PowerShell says running scripts is disabled when you activate the environment, allow it for your user account once, then try again:
+
+```powershell
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
+```
+
+If you use **Command Prompt** instead of PowerShell, activate with `.venv\Scripts\activate.bat`.
+
+Run tests:
+
+```powershell
+python -m pip install pytest
+python -m pytest -q
+```
+
 ## How to customize
 
 | Want to change | File |
