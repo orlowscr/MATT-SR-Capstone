@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+{% block content %}
+<h1>{{ event.name }}</h1>
+<p class="muted">Day {{ event.day }} · signed in as {{ event.user }}. Everything here is sample training data.</p>
+<div class="cards">
+  <a class="card" href="{{ url_for('assessment') }}"><h2>Assessment</h2><p>Score badges for functional areas and core tasks. Export to CSV.</p></a>
+  <a class="card" href="{{ url_for('task_wheel') }}"><h2>Task Wheel</h2><p>Click a segment to zoom in. Click the center to zoom out.</p></a>
+  <a class="card" href="{{ url_for('opfor') }}"><h2>OPFOR Dashboard</h2><p>Filter injects by type, day, and Blue Team.</p></a>
+</div>
+{% endblock %}
