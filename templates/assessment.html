@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Assessment{% endblock %}
+{% block content %}
+<div class="row-head">
+  <h1>Assessment</h1>
+  <button id="export-csv">Export CSV</button>
+</div>
+<p class="legend">
+  <span class="badge green">Green</span><span class="badge blue">Blue</span><span class="badge red">Red</span><span class="badge amber">Amber</span><span class="badge unscored">Unscored</span>
+</p>
+{% set labels = ["green", "blue", "red", "amber", "unscored"] %}
+{% for team in teams %}
+<section class="panel">
+  <h2>{{ team.name }}</h2>
+  <table class="scores">
+    <thead><tr><th>Area / task</th>{% for l in labels %}<th>{{ l|capitalize }}</th>{% endfor %}</tr></thead>
+    <tbody>
+    {% for name, counts in team.categories.items() %}
+      <tr class="{{ 'core' if name in core_tasks }}"><td>{{ name }}</td>
+        {% for c in counts %}<td><span class="badge {{ labels[loop.index0] }}{{ ' zero' if c == 0 }}">{{ c }}</span></td>{% endfor %}
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endfor %}
+{% endblock %}

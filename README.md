@@ -14,7 +14,8 @@ A **standalone, unofficial prototype** inspired by the screenshots provided. It 
 ## Run on macOS
 
 ```bash
-cd matt-starter
+git clone https://github.com/orlowscr/MATT-SR-Capstone.git
+cd MATT-SR-Capstone
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install -r requirements.txt
@@ -60,6 +61,8 @@ Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
 
 If you use **Command Prompt** instead of PowerShell, activate with `.venv\Scripts\activate.bat`.
 
+If a page shows `jinja2.exceptions.TemplateNotFound`, your copy is missing the `templates/` folder. Run `git pull` to get the latest files, and make sure you start `python app.py` from the repository folder (the one that contains `templates/` and `static/`).
+
 Run tests:
 
 ```powershell
@@ -100,7 +103,7 @@ Allowed `status` values: `not-started`, `running`, `stopped`. Allowed `type` val
 ## Project layout
 
 ```text
-matt-starter/
+MATT-SR-Capstone/
 ├── app.py
 ├── data.py
 ├── requirements.txt
