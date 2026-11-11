@@ -2,6 +2,17 @@
 
 A **standalone, unofficial prototype** inspired by the screenshots provided. It is **not** the original Mission Assessment Tracking Tool source code, and it does not connect to the real MATT service. Everything is sample/training data.
 
+## Project Documentation
+
+This repository belongs to the University of Cincinnati senior design team improving the Mission Assessment Tracking Tool (MATT) for the Ohio Cyber Range Institute (OCRI).
+
+| Document | Contents |
+|---|---|
+| [Project Plan](docs/PROJECT_PLAN.md) | Project direction, proposed stack, team responsibilities, build sequence, and sensitive-information rules |
+| [Test Instance Review (11/11)](docs/findings/2026-11-11-test-instance-review.md) | Usability findings from the MATT test instance, mapped to requirements |
+
+**Reminder:** this repository is public. Do not commit real exercise data, controlled documents, server addresses, or credentials.
+
 ## What you get
 
 - **Home:** event overview and navigation cards
