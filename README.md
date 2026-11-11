@@ -1,77 +1,89 @@
-# MATT Senior Design Capstone
+# MATT-style Starter Dashboard
 
-University of Cincinnati senior design project (2026–2027) to improve the **Mission Assessment Tracking Tool (MATT)**, the assessment and exercise-tracking platform used by the Ohio Cyber Range Institute (OCRI).
+A **standalone, unofficial prototype** inspired by the screenshots provided. It is **not** the original Mission Assessment Tracking Tool source code, and it does not connect to the real MATT service. Everything is sample/training data.
 
-## About MATT
+## What you get
 
-MATT helps cyber exercise staff record and review how training audiences perform during an exercise. Its main users are:
+- **Home:** event overview and navigation cards
+- **Assessment:** score badges for functional areas and core tasks; export sample data to CSV
+- **Task Wheel:** interactive hierarchical sunburst diagram; click a segment to zoom and click the center to zoom out
+- **OPFOR Dashboard:** filter by inject type, day, or Blue Team; refresh; view three workflow columns
+- **JSON endpoints:** `/api/tasks`, `/api/assessment`, `/api/injects`
+- **Basic Flask tests** (pytest)
 
-- **Assessors**, who enter observations and ratings during an exercise
-- **Technical observers and observer/controllers (O/Cs)**, who watch events and add comments
-- **Assessment leads**, who manage objectives and review results across the team
+## Run on macOS
 
-## Project Goals
+```bash
+cd matt-starter
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+python app.py
+```
 
-Our aim is to make MATT faster and easier to use without changing what it is for.
+Open **http://127.0.0.1:5000** in your browser. Use **Ctrl+C** in Terminal to stop.
 
-**Priority goals**
+Run tests:
 
-1. **Faster data entry.** Cut the number of steps an assessor needs to record an observation, and clearly confirm when data is saved.
-2. **Role-based interface.** Show assessors and assessment leads the tools they each need, and hide what they don't.
-3. **Flexible structure.** Let teams define their own tasks, measures, and objectives instead of being limited to fixed DoD terms (METL, MET, MSEL).
+```bash
+python -m pip install pytest
+python -m pytest -q
+```
 
-**Stretch goals**
+## How to customize
 
-- A more forgiving MSEL Excel import, with a preview and an error summary
-- An assessment wheel you can click into for detail
-- Comments you can filter
-- A clearer, more readable Assessment Team Report
-- Separate production and development environments
+| Want to change | File |
+|---|---|
+| Event name, day, user | `data.py` → `EVENT` |
+| Assessment numbers | `data.py` → `TEAMS` |
+| Circle/wheel task hierarchy | `data.py` → `TASKS` |
+| OPFOR injects and statuses | `data.py` → `INJECTS` |
+| Navigation bar / common layout | `templates/base.html` |
+| Individual pages | `templates/*.html` |
+| Design, colors, spacing | `static/css/style.css` |
+| Filter/chart interactions | `static/js/app.js` |
+| API routes | `app.py` |
 
-**Out of scope**
+Edit a Python file and Flask's development server should reload. Refresh the browser after changing HTML, CSS, or JavaScript.
 
-- Re-architecting the whole system
-- Migrating historical exercise data
-- DoD accreditation
+### Example: add a new inject
 
-## Repository Contents
+Append this dictionary to `INJECTS` inside `data.py`:
 
-| Path | What it is |
-| --- | --- |
-| `MATT_Senior_Design_Team_Contract.docx` | Team contract, including requirements, roles, and expectations |
-| `10_8 Meeting Minutes.pdf`, `10_15 Meeting Minutes.pdf`, `10_22_Meeting_Minutes.pdf` | Notes from team and sponsor meetings |
-| `.github/ISSUE_TEMPLATE/` | Templates for bug reports, research tasks, and project tasks |
+```python
+{
+    "id": "INJ-006", "title": "New training inject", "type": "red",
+    "day": 2, "team": "Blue Team A", "status": "not-started",
+    "priority": "High", "description": "Description of the inject."
+}
+```
 
-Source code will be added here once the team settles on its approach.
+Allowed `status` values: `not-started`, `running`, `stopped`. Allowed `type` values in current filters: `red` and `white`. If you add a new team or inject type, update the dropdowns in `templates/opfor.html`.
 
-## How We Work
+## Project layout
 
-We track all work in [GitHub Issues](../../issues). When you open an issue, choose a template:
+```text
+matt-starter/
+├── app.py
+├── data.py
+├── requirements.txt
+├── README.md
+├── templates/
+│   ├── base.html
+│   ├── home.html
+│   ├── assessment.html
+│   ├── wheel.html
+│   └── opfor.html
+├── static/
+│   ├── css/style.css
+│   └── js/app.js
+└── tests/test_app.py
+```
 
-- **Bug Report** for a defect or unexpected behavior
-- **Research & Requirements** for questions, sponsor decisions, and technical discovery
-- **Project Task** for a piece of work with a clear deliverable
+## Important notes
 
-Milestones group issues by phase, starting with **M1: Requirements Baseline**.
-
-## Handling Sensitive Information
-
-This repository is **public**. Please do not commit or attach:
-
-- Real exercise data, logs, or screenshots containing it
-- Controlled documents (for example, anything marked FOUO or with limited distribution)
-- Passwords, keys, server addresses, or other credentials
-
-Use approved sample data for testing and examples. Share controlled material only through channels the sponsor has approved.
-
-## Team
-
-- Sam Anderson
-- Luke Link
-- Srithan Mopuru
-- Noah Nguyen
-- Cooper Orlowski
-- Xuhui Zou
-
-**Faculty advisor:** Samuel Bricking
-**Sponsor:** Ohio Cyber Range Institute (OCRI), University of Cincinnati
+- Task wheel uses **D3 v7 from a public CDN**. It requires internet access on first load. To use offline, download D3 locally and replace the script source in `templates/base.html`.
+- The Flask server runs in **development mode**; do not expose it publicly. There is no authentication or authorization.
+- Buttons marked DEMO and the CHAT placeholder are not attached to real accounts or services.
+- OPFOR records are read-only mock data, so auto-refresh reloads the same dataset unless `data.py` changes.
+- Before production deployment, use a database, authentication, role-based permissions, CSRF protection, input validation, audit logs, and secure server configuration.
