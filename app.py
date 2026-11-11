@@ -1,56 +1,64 @@
 """MATT-inspired training dashboard prototype. Not affiliated with the original MATT product."""
 from flask import Flask, jsonify, render_template, request
-from data import EVENT, TEAMS, TASKS, INJECTS, CORE_TASKS
 
-app = Flask(__name__)
-
-
-@app.context_processor
-def inject_globals():
-    return {"event": EVENT}
+import queries
+from config import Config
+from extensions import db, migrate
+from seed import register_cli
 
 
-@app.get("/")
-def home():
-    return render_template("home.html", active="home")
+def create_app(test_config=None):
+    app = Flask(__name__)
+    app.config.from_object(Config)
+    if test_config:
+        app.config.update(test_config)
 
+    db.init_app(app)
+    migrate.init_app(app, db)
+    register_cli(app)
 
-@app.get("/assessment")
-def assessment():
-    return render_template("assessment.html", active="assessment", teams=TEAMS, core_tasks=CORE_TASKS)
+    @app.context_processor
+    def inject_globals():
+        return {"event": queries.event_context(app.config["DEMO_USER"])}
 
+    @app.get("/")
+    def home():
+        return render_template("home.html", active="home")
 
-@app.get("/task-wheel")
-def task_wheel():
-    return render_template("wheel.html", active="wheel")
+    @app.get("/assessment")
+    def assessment():
+        event = queries.current_event()
+        return render_template("assessment.html", active="assessment",
+                               teams=queries.assessment_data(event),
+                               core_tasks=queries.core_task_names(event))
 
+    @app.get("/task-wheel")
+    def task_wheel():
+        return render_template("wheel.html", active="wheel")
 
-@app.get("/opfor")
-def opfor():
-    return render_template("opfor.html", active="opfor")
+    @app.get("/opfor")
+    def opfor():
+        return render_template("opfor.html", active="opfor")
 
+    @app.get("/api/tasks")
+    def api_tasks():
+        return jsonify(queries.task_tree(queries.current_event()))
 
-@app.get("/api/tasks")
-def api_tasks():
-    return jsonify(TASKS)
+    @app.get("/api/injects")
+    def api_injects():
+        return jsonify(queries.inject_list(
+            queries.current_event(),
+            inject_type=request.args.get("type", "all").lower(),
+            day=request.args.get("day", "all"),
+            team=request.args.get("team", "all"),
+        ))
 
+    @app.get("/api/assessment")
+    def api_assessment():
+        return jsonify(queries.assessment_data(queries.current_event()))
 
-@app.get("/api/injects")
-def api_injects():
-    inject_type = request.args.get("type", "all").lower()
-    day = request.args.get("day", "all")
-    team = request.args.get("team", "all")
-    filtered = [item for item in INJECTS
-                if (inject_type == "all" or item["type"].lower() == inject_type)
-                and (day == "all" or str(item["day"]) == day)
-                and (team == "all" or item["team"] == team)]
-    return jsonify(filtered)
-
-
-@app.get("/api/assessment")
-def api_assessment():
-    return jsonify(TEAMS)
+    return app
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    create_app().run(debug=True)
