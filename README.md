@@ -1,6 +1,6 @@
-# MATT-style Starter Dashboard
+# MATT Dashboard
 
-A **standalone, unofficial prototype** inspired by the screenshots provided. It is **not** the original Mission Assessment Tracking Tool source code, and it does not connect to the real MATT service. Everything is sample/training data.
+**standalone, unofficial prototype** 
 
 ## Project Documentation
 
