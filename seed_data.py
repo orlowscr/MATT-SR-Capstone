@@ -1,18 +1,14 @@
-"""Editable demonstration data. Replace with database queries when ready."""
-EVENT = {"name": "Capstone Course", "day": 2, "classification": "UNCLASSIFIED", "user": "student1"}
-CORE_TASKS = ["Core Task 1", "Core Task 2", "Core Task 3", "Core Task 4", "Core Task 5", "Core Task 7"]
+"""Synthetic demonstration data used by `flask seed`. Fake data only: this repo is public.
 
-# For each category: green, blue, red, amber, unscored (example counts).
-TEAMS = [
-    {"name": "CAPSTONE_COURSE", "categories": {
-        "IDENTIFY": [0, 0, 0, 0, 0], "PROTECT": [0, 0, 0, 0, 0],
-        "DETECT": [0, 0, 0, 0, 0], "RESPOND": [0, 0, 0, 0, 0],
-        "RECOVER": [0, 0, 0, 0, 0],
-        "Core Task 1": [1, 0, 0, 2, 3], "Core Task 2": [0, 0, 0, 33, 33],
-        "Core Task 3": [0, 0, 0, 22, 22], "Core Task 4": [0, 0, 0, 8, 8],
-        "Core Task 5": [0, 0, 0, 17, 17], "Core Task 7": [0, 0, 0, 6, 6]
-    }}
-]
+This is the old data.py, kept as seed input. The app itself reads from the database.
+"""
+EVENT = {"name": "Capstone Course", "day": 2, "classification": "UNCLASSIFIED"}
+DEMO_USER = {"username": "student1", "role": "assessor"}
+
+# The team whose measures the sample evaluations belong to.
+ASSESSED_TEAM = "CAPSTONE_COURSE"
+# Training teams that the injects are assigned to.
+TRAINING_TEAMS = ["Blue Team A", "Blue Team B"]
 
 # Hierarchy powers the wheel: core task -> subtask -> checkpoints.
 TASKS = [
